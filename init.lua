@@ -36,6 +36,9 @@ vim.keymap.set('n', '<leader>mr', ':MRU<CR>', {noremap = true});
 vim.keymap.set('n', '<leader>x', '<c-w>c', {noremap = true});
 vim.keymap.set('n', '<leader>e', ':Oil<CR>', {noremap = true});
 
+vim.keymap.set('n', '<leader>y', '\"+y', {noremap = true});
+vim.keymap.set('n', '<leader>p', '\"+p', {noremap = true});
+
 vim.keymap.set('n', '<leader>n', ':bn<CR>', {noremap = true});
 
 vim.keymap.set({'n','v','x'}, '<leader>y', '"+y')

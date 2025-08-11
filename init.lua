@@ -29,7 +29,7 @@ vim.keymap.set('n', '<leader>rn', ':lua toggle_relativenumber()<CR>', {noremap =
 vim.keymap.set('n', '<leader>oo', 'o<ESC>k', {noremap = true})
 vim.keymap.set('n', '<leader>OO', 'O<ESC>j', {noremap = true})
 
-vim.keymap.set('n', '<leader>o', ':update<CR>:source<CR>', {noremap = true})
+vim.keymap.set('n', '<leader>s', ':update<CR>:source<CR>', {noremap = true})
 vim.keymap.set('n', '<leader>w', ':write<CR>', {noremap = true})
 vim.keymap.set('n', '<leader>q', ':quit<CR>', {noremap = true})
 vim.keymap.set('n', '<leader>mr', ':MRU<CR>', {noremap = true});
@@ -47,16 +47,36 @@ vim.keymap.set({'n','v','x'}, '<leader>d', '"+d')
 vim.keymap.set({'n','v','x'}, '<leader>f', ":Pick files<CR>")
 vim.keymap.set({'n','v','x'}, '<leader>h', ":Pick help<CR>")
 
+vim.keymap.set({'n', 'v', 'x'}, '<c-d>', '<c-d>zz', {noremap = true})
+vim.keymap.set({'n', 'v', 'x'}, '<c-u>', '<c-u>zz', {noremap = true})
+
+
+-- vim.keymap.set({'n','v','x'}, '<leader>clh', ':lua ClearUndoHistory()')
+
 vim.pack.add({
     {src = "https://github.com/vague2k/vague.nvim"},
     {src = "https://github.com/stevearc/oil.nvim"},
     {src = "https://github.com/echasnovski/mini.pick"},
     {src = "https://github.com/yegappan/mru"},
+    {src = 'https://github.com/folke/which-key.nvim'},
 })
 
 require "oil".setup()
 require "mini.pick".setup()
+local wk = require("which-key")
+wk.setup({
+    delay = 500,
+    show_help = true,
+})
 
+-- -- function ClearUndoHistory()
+--     local old_undolevels = vim.bo.undolevels
+--     vim.bo.undolevels = -1
+-- -- Safely simulate: insert mode, escape, undo — without inserting text
+--     local esc = vim.fn.nr2char(27)
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('iu' .. esc .. 'u', true, false, true), 'n', false)
+--     vim.bo.undolevels = old_undolevels
+-- end   
 
 vim.cmd("colorscheme vague")
 vim.cmd(":hi statusline guibg=none")

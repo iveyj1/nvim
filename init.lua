@@ -24,22 +24,22 @@ function toggle_relativenumber()
 end
 
 -- Map the function to a key combination, e.g., <leader>rn
-vim.keymap.set('n', '<leader>rn', ':lua toggle_relativenumber()<CR>', {noremap = true})
+vim.keymap.set('n', '<leader>rn', ':lua toggle_relativenumber()<CR>')
 
-vim.keymap.set('n', '<leader>oo', 'o<ESC>k', {noremap = true})
-vim.keymap.set('n', '<leader>OO', 'O<ESC>j', {noremap = true})
+vim.keymap.set('n', '<leader>oo', 'o<ESC>k')
+vim.keymap.set('n', '<leader>OO', 'O<ESC>j')
 
-vim.keymap.set('n', '<leader>s', ':update<CR>:source<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>w', ':write<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>q', ':quit<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>mr', ':MRU<CR>', {noremap = true});
-vim.keymap.set('n', '<leader>x', '<c-w>c', {noremap = true});
-vim.keymap.set('n', '<leader>e', ':Oil<CR>', {noremap = true});
+vim.keymap.set('n', '<leader>s', ':update<CR>:source<CR>')
+vim.keymap.set('n', '<leader>w', ':write<CR>')
+vim.keymap.set('n', '<leader>q', ':quit<CR>')
+vim.keymap.set('n', '<leader>mr', ':MRU<CR>');
+vim.keymap.set('n', '<leader>x', '<c-w>c');
+vim.keymap.set('n', '<leader>e', ':Oil<CR>');
 
-vim.keymap.set('n', '<leader>y', '\"+y', {noremap = true});
-vim.keymap.set('n', '<leader>p', '\"+p', {noremap = true});
+vim.keymap.set('n', '<leader>y', '\"+y');
+vim.keymap.set('n', '<leader>p', '\"+p');
 
-vim.keymap.set('n', '<leader>n', ':bn<CR>', {noremap = true});
+vim.keymap.set('n', '<leader>n', ':bn<CR>');
 
 vim.keymap.set({'n','v','x'}, '<leader>y', '"+y')
 vim.keymap.set({'n','v','x'}, '<leader>d', '"+d')
@@ -47,9 +47,11 @@ vim.keymap.set({'n','v','x'}, '<leader>d', '"+d')
 vim.keymap.set({'n','v','x'}, '<leader>f', ":Pick files<CR>")
 vim.keymap.set({'n','v','x'}, '<leader>h', ":Pick help<CR>")
 
-vim.keymap.set({'n', 'v', 'x'}, '<c-d>', '<c-d>zz', {noremap = true})
-vim.keymap.set({'n', 'v', 'x'}, '<c-u>', '<c-u>zz', {noremap = true})
+vim.keymap.set({'n', 'v', 'x'}, '<c-d>', '<c-d>zz')
+vim.keymap.set({'n', 'v', 'x'}, '<c-u>', '<c-u>zz')
 
+-- vim.keymap.set({'n', 'v', 'x'}, 'U', 'u')
+vim.keymap.set("n", "U", ":echo '                                   Do not use ''U'''\n", { silent = true })   
 
 -- vim.keymap.set({'n','v','x'}, '<leader>clh', ':lua ClearUndoHistory()')
 

@@ -1,93 +1,128 @@
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.wrap = false
-vim.o.tabstop = 4
-vim.o.expandtab = true
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
+-- Options
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.wrap = false
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.swapfile = false
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.smartindent = true
+vim.opt.termguicolors = true
+vim.opt.undofile = true
+vim.opt.incsearch = true
+vim.opt.signcolumn = "yes"
+-- Treesitter folds
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-vim.o.swapfile = false
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.smartindent = true
-vim.o.termguicolors = true
-vim.o.undofile = true
-vim.o.incsearch = true
-vim.o.signcolumn = "yes"
-vim.o.winborder = "rounded"
+-- Leader first
+vim.g.mapleader = " "
 
+-- Keymaps
 local map = vim.keymap.set
 
-vim.g.mapleader = " "
-function toggle_relativenumber()
-  vim.opt.relativenumber = not vim.opt.relativenumber:get()
+local function toggle_relativenumber()
+    vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end
+map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
--- Map the function to a key combination, e.g., <leader>rn
-vim.keymap.set('n', '<leader>rn', ':lua toggle_relativenumber()<CR>')
+map('n', '<leader>w', ':write<CR>', { silent = true, desc = 'Write' })
+map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
+map('n', '<leader>mr', ':MRU<CR>',  { silent = true, desc = 'MRU' })
+map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
+map('n', '<leader>e', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
 
--- vim.keymap.set('n', '<leader>oo', 'o<ESC>k')
--- vim.keymap.set('n', '<leader>OO', 'O<ESC>j')
+-- System clipboard
+map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+map({'n','v','x'}, '<leader>d', '"+d', { desc = 'Delete to system clipboard' })
+map('n', '<leader>p', '"+p',           { desc = 'Paste from system clipboard' })
 
--- vim.keymap.set('n', '<leader>s', ':update<CR>:source<CR>')
-vim.keymap.set('n', '<leader>w', ':write<CR>')
-vim.keymap.set('n', '<leader>q', ':quit<CR>')
-vim.keymap.set('n', '<leader>mr', ':MRU<CR>');
-vim.keymap.set('n', '<leader>x', '<c-w>c');
-vim.keymap.set('n', '<leader>e', ':Oil<CR>');
+-- Navigation niceties
+map({'n','v','x'}, '<C-d>', '<C-d>zz', { desc = 'Half-page down centered' })
+map({'n','v','x'}, '<C-u>', '<C-u>zz', { desc = 'Half-page up centered' })
 
-vim.keymap.set('n', '<leader>y', '\"+y');
-vim.keymap.set('n', '<leader>p', '\"+p');
+-- Don’t use U as redo
+map('n', 'U', function() print("Do not use 'U'") end, { silent = true })
 
-vim.keymap.set('n', '<leader>n', ':bn<CR>');
-
-vim.keymap.set({'n','v','x'}, '<leader>y', '"+y')
-vim.keymap.set({'n','v','x'}, '<leader>d', '"+d')
-
-vim.keymap.set({'n','v','x'}, '<leader>f', ":Pick files<CR>")
-vim.keymap.set({'n','v','x'}, '<leader>h', ":Pick help<CR>")
-
-vim.keymap.set({'n', 'v', 'x'}, '<c-d>', '<c-d>zz')
-vim.keymap.set({'n', 'v', 'x'}, '<c-u>', '<c-u>zz')
-
--- vim.keymap.set({'n', 'v', 'x'}, 'U', 'u')
-vim.keymap.set("n", "U", ":echo '                                   Do not use ''U'''\n", { silent = true })   
-
--- vim.keymap.set({'n','v','x'}, '<leader>clh', ':lua ClearUndoHistory()')
-
+-- Pick (mini.pick)
+map({'n','v','x'}, '<leader>f', ':Pick files<CR>', { silent = true, desc = 'Pick files' })
+map({'n','v','x'}, '<leader>h', ':Pick help<CR>',  { silent = true, desc = 'Pick help' })
+map({'n','v','x'}, '<leader>b', ':Pick buffers<CR>', { silent = true, desc = 'Pick buffer'})
+-- Plugins via pack (Neovim 0.12+)
 vim.pack.add({
-    {src = "https://github.com/vague2k/vague.nvim"},
-    {src = "https://github.com/stevearc/oil.nvim"},
-    {src = "https://github.com/echasnovski/mini.pick"},
-    {src = "https://github.com/yegappan/mru"},
-    {src = 'https://github.com/folke/which-key.nvim'},
+    { src = "https://github.com/vague2k/vague.nvim" },
+    { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/echasnovski/mini.pick" },
+    { src = "https://github.com/yegappan/mru" },
+    { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/nvim-tree/nvim-web-devicons" }, -- optional, icons
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
 })
 
-require "oil".setup()
-require "mini.pick".setup()
-local wk = require("which-key")
-wk.setup({
-    delay = 500,
+-- Treesitter
+require('nvim-treesitter.configs').setup({
+    ensure_installed = {
+        "c", "lua", "vim", "vimdoc", "query",
+        "markdown", "markdown_inline",
+    },
+    sync_install = false,
+    auto_install = true,
+    ignore_install = { "javascript" }, -- keep if intentional
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+        disable = function(lang, buf)
+            local max_filesize = 100 * 1024 -- 100 KB
+            local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+            return ok and stats and stats.size > max_filesize
+        end,
+    },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "gnn",
+            node_incremental = "grn",
+            scope_incremental = "grc",
+            node_decremental = "grm",
+        },
+    },
+    indent = { enable = true },
+    textobjects = {
+        select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+                ['af'] = '@function.outer',
+                ['if'] = '@function.inner',
+            },
+        },
+    },
+})
+
+-- optional: start with all folds open
+vim.opt.foldlevel = 99
+
+-- Oil / mini.pick / which-key
+require('oil').setup()
+require('mini.pick').setup()
+require('which-key').setup({
+    delay = 300,
     show_help = true,
 })
 
--- -- function ClearUndoHistory()
---     local old_undolevels = vim.bo.undolevels
---     vim.bo.undolevels = -1
--- -- Safely simulate: insert mode, escape, undo — without inserting text
---     local esc = vim.fn.nr2char(27)
---     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('iu' .. esc .. 'u', true, false, true), 'n', false)
---     vim.bo.undolevels = old_undolevels
--- end   
-
+-- UI
 vim.cmd("colorscheme vague")
-vim.cmd(":hi statusline guibg=none")
+vim.cmd("hi statusline guibg=none")
 
+-- Yank highlight
 vim.api.nvim_create_autocmd('TextYankPost', {
-  group = vim.api.nvim_create_augroup('highlight_yank', {}),
-  desc = 'Highlight selection on yank',
-  pattern = '*',
-  callback = function()
-    vim.highlight.on_yank { higroup = 'IncSearch', timeout = 500 }
-  end,
+    group = vim.api.nvim_create_augroup('highlight_yank', { clear = true }),
+    desc = 'Highlight selection on yank',
+    callback = function()
+        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+    end,
 })

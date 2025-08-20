@@ -126,3 +126,42 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
     end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "help",
+    callback = function()
+        vim.cmd("wincmd o")  -- closes other windows
+        vim.cmd("resize")    -- optional: resize full height
+        vim.opt_local.buflisted = true
+    end,
+})
+
+-- Put in init.lua (Neovim)
+local function cycle_buffers(dir, include_unlisted)
+    local cur = vim.api.nvim_get_current_buf()
+    local ids = {}
+
+    for _, b in ipairs(vim.fn.getbufinfo()) do
+        if b.loaded == 1 and (include_unlisted or b.listed == 1) then
+            table.insert(ids, b.bufnr)
+        end
+    end
+    table.sort(ids)
+
+    if #ids <= 1 then return end
+
+    local idx = 1
+    for i, n in ipairs(ids) do
+        if n == cur then idx = i; break end
+    end
+
+    local next_idx = ((idx - 1 + dir) % #ids) + 1
+    vim.cmd('buffer ' .. ids[next_idx])
+end
+
+-- Mappings: listed buffers only
+vim.keymap.set('n', '<leader>n', function() cycle_buffers( 1, true) end, {silent=true})
+vim.keymap.set('n', '<leader>p', function() cycle_buffers(-1, false) end, {silent=true})
+
+-- Optional: include *all* loaded buffers (even unlisted/help/etc.)
+vim.keymap.set('n', 'g]b', function() cycle_buffers( 1, true) end, {silent=true})
+vim.keymap.set('n', 'g[b', function() cycle_buffers(-1, true) end, {silent=true})

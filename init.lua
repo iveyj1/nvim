@@ -134,20 +134,25 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.buflisted = true
     end,
 })
-
--- Put in init.lua (Neovim)
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "new",
+    callback = function()
+        vim.cmd("wincmd o")  -- closes other windows
+        vim.cmd("resize")    -- optional: resize full height
+        vim.opt_local.buflisted = true
+    end,
+})
 local function cycle_buffers(dir, include_unlisted)
     local cur = vim.api.nvim_get_current_buf()
+    local bufs = include_unlisted and vim.fn.getbufinfo()
+                                or  vim.fn.getbufinfo({ buflisted = 1 })
+    if #bufs <= 1 then return end
+
+    table.sort(bufs, function(a, b) return a.bufnr < b.bufnr end)
     local ids = {}
-
-    for _, b in ipairs(vim.fn.getbufinfo()) do
-        if b.loaded == 1 and (include_unlisted or b.listed == 1) then
-            table.insert(ids, b.bufnr)
-        end
+    for _, b in ipairs(bufs) do
+        table.insert(ids, b.bufnr)
     end
-    table.sort(ids)
-
-    if #ids <= 1 then return end
 
     local idx = 1
     for i, n in ipairs(ids) do
@@ -155,13 +160,10 @@ local function cycle_buffers(dir, include_unlisted)
     end
 
     local next_idx = ((idx - 1 + dir) % #ids) + 1
-    vim.cmd('buffer ' .. ids[next_idx])
+    vim.cmd('buffer ' .. ids[next_idx])  -- :buffer will load if needed
 end
 
--- Mappings: listed buffers only
-vim.keymap.set('n', '<leader>n', function() cycle_buffers( 1, true) end, {silent=true})
-vim.keymap.set('n', '<leader>p', function() cycle_buffers(-1, false) end, {silent=true})
+vim.keymap.set('n', '<leader>n', function() cycle_buffers(1, true) end, { silent = true })
+-- vim.keymap.set('n', '<leader>N', function() cycle_buffers(-1, true) end, { silent = true })
 
--- Optional: include *all* loaded buffers (even unlisted/help/etc.)
-vim.keymap.set('n', 'g]b', function() cycle_buffers( 1, true) end, {silent=true})
-vim.keymap.set('n', 'g[b', function() cycle_buffers(-1, true) end, {silent=true})
+vim.keymap.set("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { desc = "Open config as only window" })   

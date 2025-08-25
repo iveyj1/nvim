@@ -27,6 +27,27 @@ local map = vim.keymap.set
 local function toggle_relativenumber()
     vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end
+local function cycle_buffers(dir, include_unlisted)
+    local cur = vim.api.nvim_get_current_buf()
+    local bufs = include_unlisted and vim.fn.getbufinfo()
+                                or  vim.fn.getbufinfo({ buflisted = 1 })
+    if #bufs <= 1 then return end
+
+    table.sort(bufs, function(a, b) return a.bufnr < b.bufnr end)
+    local ids = {}
+    for _, b in ipairs(bufs) do
+        table.insert(ids, b.bufnr)
+    end
+
+    local idx = 1
+    for i, n in ipairs(ids) do
+        if n == cur then idx = i; break end
+    end
+
+    local next_idx = ((idx - 1 + dir) % #ids) + 1
+    vim.cmd('buffer ' .. ids[next_idx])  -- :buffer will load if needed
+end
+
 map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
 map('n', '<leader>w', ':write<CR>', { silent = true, desc = 'Write' })
@@ -51,6 +72,11 @@ map('n', 'U', function() print("Do not use 'U'") end, { silent = true })
 map({'n','v','x'}, '<leader>f', ':Pick files<CR>', { silent = true, desc = 'Pick files' })
 map({'n','v','x'}, '<leader>h', ':Pick help<CR>',  { silent = true, desc = 'Pick help' })
 map({'n','v','x'}, '<leader>b', ':Pick buffers<CR>', { silent = true, desc = 'Pick buffer'})
+
+vim.keymap.set('n', '<leader>n', function() cycle_buffers(1, true) end, { silent = true })
+vim.keymap.set("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { desc = "Open config as only window" })   
+vim.keymap.set('n', '<leader>ew', ':new<CR>:only<CR>', { desc = 'open new file as only window'})
+
 -- Plugins via pack (Neovim 0.12+)
 vim.pack.add({
     { src = "https://github.com/vague2k/vague.nvim" },
@@ -142,28 +168,3 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.buflisted = true
     end,
 })
-local function cycle_buffers(dir, include_unlisted)
-    local cur = vim.api.nvim_get_current_buf()
-    local bufs = include_unlisted and vim.fn.getbufinfo()
-                                or  vim.fn.getbufinfo({ buflisted = 1 })
-    if #bufs <= 1 then return end
-
-    table.sort(bufs, function(a, b) return a.bufnr < b.bufnr end)
-    local ids = {}
-    for _, b in ipairs(bufs) do
-        table.insert(ids, b.bufnr)
-    end
-
-    local idx = 1
-    for i, n in ipairs(ids) do
-        if n == cur then idx = i; break end
-    end
-
-    local next_idx = ((idx - 1 + dir) % #ids) + 1
-    vim.cmd('buffer ' .. ids[next_idx])  -- :buffer will load if needed
-end
-
-vim.keymap.set('n', '<leader>n', function() cycle_buffers(1, true) end, { silent = true })
--- vim.keymap.set('n', '<leader>N', function() cycle_buffers(-1, true) end, { silent = true })
-
-vim.keymap.set("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { desc = "Open config as only window" })   

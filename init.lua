@@ -54,7 +54,10 @@ map('n', '<leader>w', ':write<CR>', { silent = true, desc = 'Write' })
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
 map('n', '<leader>mr', ':MRU<CR>',  { silent = true, desc = 'MRU' })
 map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
-map('n', '<leader>e', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
+map('n', '<leader>ed', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
+map("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { desc = "Open config as only window" })   
+map('n', '<leader>ew', ':new<CR>:only<CR>', { desc = 'open new file as only window'})
+map('n', '<leader>l',  ':ls<CR>', {desc = 'list buffers'})
 
 -- System clipboard
 map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
@@ -73,9 +76,8 @@ map({'n','v','x'}, '<leader>f', ':Pick files<CR>', { silent = true, desc = 'Pick
 map({'n','v','x'}, '<leader>h', ':Pick help<CR>',  { silent = true, desc = 'Pick help' })
 map({'n','v','x'}, '<leader>b', ':Pick buffers<CR>', { silent = true, desc = 'Pick buffer'})
 
-vim.keymap.set('n', '<leader>n', function() cycle_buffers(1, true) end, { silent = true })
-vim.keymap.set("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { desc = "Open config as only window" })   
-vim.keymap.set('n', '<leader>ew', ':new<CR>:only<CR>', { desc = 'open new file as only window'})
+-- map('n', '<leader>n', function() cycle_buffers(1, true) end, { silent = true })
+map('n', '<leader>n', ':bn<CR>', { silent = true, desc='Next buffer' })
 
 -- Plugins via pack (Neovim 0.12+)
 vim.pack.add({

@@ -20,7 +20,7 @@ vim.opt.signcolumn = "yes"
 -- Treesitter folds
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
+vim.opt.foldenable = false
 -- Keymaps
 local map = vim.keymap.set
 
@@ -90,15 +90,19 @@ vim.pack.add({
     { src = "https://github.com/nvim-tree/nvim-web-devicons" }, -- optional, icons
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" } ,
+    { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" } ,
+    { src = "https://github.com/MunifTanjim/nui.nvim" } ,
+    { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" },
 })
 
 require("plugins.treesitter");
 
 -- optional: start with all folds open
-vim.opt.foldlevel = 99
+-- vim.opt.foldlevel = 99
 
 -- Oil / mini.pick / which-key
-require('oil').setup()
+require('oil').setup({ default_file_explorer = false, })
 require('mini.pick').setup()
 require('which-key').setup({
     delay = 300,

@@ -1,3 +1,6 @@
+-- Leader first
+vim.g.mapleader = " "
+
 -- Options
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -18,35 +21,33 @@ vim.opt.signcolumn = "yes"
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
--- Leader first
-vim.g.mapleader = " "
-
 -- Keymaps
 local map = vim.keymap.set
 
 local function toggle_relativenumber()
     vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end
-local function cycle_buffers(dir, include_unlisted)
-    local cur = vim.api.nvim_get_current_buf()
-    local bufs = include_unlisted and vim.fn.getbufinfo()
-                                or  vim.fn.getbufinfo({ buflisted = 1 })
-    if #bufs <= 1 then return end
 
-    table.sort(bufs, function(a, b) return a.bufnr < b.bufnr end)
-    local ids = {}
-    for _, b in ipairs(bufs) do
-        table.insert(ids, b.bufnr)
-    end
-
-    local idx = 1
-    for i, n in ipairs(ids) do
-        if n == cur then idx = i; break end
-    end
-
-    local next_idx = ((idx - 1 + dir) % #ids) + 1
-    vim.cmd('buffer ' .. ids[next_idx])  -- :buffer will load if needed
-end
+-- local function cycle_buffers(dir, include_unlisted)
+--     local cur = vim.api.nvim_get_current_buf()
+--     local bufs = include_unlisted and vim.fn.getbufinfo()
+--                                 or  vim.fn.getbufinfo({ buflisted = 1 })
+--     if #bufs <= 1 then return end
+-- 
+--     table.sort(bufs, function(a, b) return a.bufnr < b.bufnr end)
+--     local ids = {}
+--     for _, b in ipairs(bufs) do
+--         table.insert(ids, b.bufnr)
+--     end
+-- 
+--     local idx = 1
+--     for i, n in ipairs(ids) do
+--         if n == cur then idx = i; break end
+--     end
+-- 
+--     local next_idx = ((idx - 1 + dir) % #ids) + 1
+--     vim.cmd('buffer ' .. ids[next_idx])  -- :buffer will load if needed
+-- end
 
 map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
@@ -91,45 +92,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
 })
 
--- Treesitter
-require('nvim-treesitter.configs').setup({
-    ensure_installed = {
-        "c", "lua", "vim", "vimdoc", "query",
-        "markdown", "markdown_inline",
-    },
-    sync_install = false,
-    auto_install = true,
-    ignore_install = { "javascript" }, -- keep if intentional
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-        disable = function(lang, buf)
-            local max_filesize = 100 * 1024 -- 100 KB
-            local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-            return ok and stats and stats.size > max_filesize
-        end,
-    },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = "gnn",
-            node_incremental = "grn",
-            scope_incremental = "grc",
-            node_decremental = "grm",
-        },
-    },
-    indent = { enable = true },
-    textobjects = {
-        select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-                ['af'] = '@function.outer',
-                ['if'] = '@function.inner',
-            },
-        },
-    },
-})
+require("plugins.treesitter");
 
 -- optional: start with all folds open
 vim.opt.foldlevel = 99
@@ -157,8 +120,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "help",
     callback = function()
-        vim.cmd("wincmd o")  -- closes other windows
-        vim.cmd("resize")    -- optional: resize full height
+        vim.cmd("wincmd o")
+        vim.cmd("resize")    -- resize full height
         vim.opt_local.buflisted = true
     end,
 })
@@ -166,7 +129,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "new",
     callback = function()
         vim.cmd("wincmd o")  -- closes other windows
-        vim.cmd("resize")    -- optional: resize full height
+        vim.cmd("resize")    -- resize full height
         vim.opt_local.buflisted = true
     end,
 })

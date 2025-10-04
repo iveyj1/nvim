@@ -17,6 +17,7 @@ vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.incsearch = true
 vim.opt.signcolumn = "yes"
+vim.opt.undolevels = 10000
 -- Treesitter folds
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -30,16 +31,18 @@ end
 
 map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
+vim.opt.makeprg = [[./nrf-build.sh -p . -b nrf54l15dk/nrf54l15/cpuapp -f -E "-DEXTRA_CONF_FILE=debug.conf" $*]]
+
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
 map('n', '<leader>mr', ':MRU<CR>',  { silent = true, desc = 'MRU' })
--- map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
+map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
 map('n', '<leader>ed', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
 map("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { silent = true, desc = "Open config as only window" })   
 map('n', '<leader>ew', ':new<CR>:only<CR>', { silent = true; desc = 'open new file as only window'})
 map('n', '<leader>l',  ':ls<CR>', {silent = true, desc = 'list buffers'})
 map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
 map('n', '<leader>the',  ':TSEnsable highlight<cr>', { silent = true, desc = "Eisable Treesitter syntax highlighting"})
--- map('n', '<leader>w',  '<c-w>j', { silent = true, desc = "Next window"})
+map('n', '<leader>w',  '<c-w>j', { silent = true, desc = "Next window"})
 
 
 -- System clipboard
@@ -52,7 +55,7 @@ map({'n','v','x'}, '<C-d>', '<C-d>zz', { desc = 'Half-page down centered' })
 map({'n','v','x'}, '<C-u>', '<C-u>zz', { desc = 'Half-page up centered' })
 
 -- Don’t use U as redo
--- map('n', 'U', function() print("Do not use 'U'") end, { silent = true })
+map('n', 'U', function() print("Do not use 'U'") end, { silent = true })
 
 
 -- Plugins via pack (Neovim 0.12+)
@@ -69,10 +72,20 @@ vim.pack.add({
     { src = "https://github.com/nvim-lua/plenary.nvim" } ,
     { src = "https://github.com/MunifTanjim/nui.nvim" } ,
     { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" } ,
+    -- { src = "https://github.com/ibhagwan/fzf-lua" } ,
 })
 
 -- Pick (mini.pick)
-map({'n','v','x'}, '<leader>f', ':Pick files<CR>', { silent = true, desc = 'Pick files' })
+map({'n','v','x'}, '<leader>ff', ':Pick files<CR>', { silent = true, desc = 'Pick files from cwd' })
+
+vim.keymap.set('n', '<leader>fc', function()
+    MiniPick.builtin.files(nil, { source = { cwd = '../common' } })
+end, { desc = 'Open MiniPick in ../common' })
+
+vim.keymap.set('n', '<leader>fb', function()
+    MiniPick.builtin.files(nil, { source = { cwd = '../../boards/arm' } })
+end, { desc = 'Open MiniPick in ../boards/arm' })
+
 map({'n','v','x'}, '<leader>h', ':Pick help<CR>',  { silent = true, desc = 'Pick help' })
 map({'n','v','x'}, '<leader>b', ':Pick buffers<CR>', { silent = true, desc = 'Pick buffer'})
 
@@ -84,12 +97,11 @@ vim.keymap.set('n', '<leader>x', function()
 -- map('n', '<leader>n', function() cycle_buffers(1, true) end, { silent = true })
 map('n', '<leader>n', ':bn<CR>', { silent = true, desc='Next buffer' })
 
-require("plugins.treesitter");
+require("plugins.treesitter")
+-- require("fzf-lua").files({ cmd = fd_cmd(roots, opts.args) })
 
 -- optional: start with all folds open
 -- vim.opt.foldlevel = 99
-
--- Oil / mini.pick / which-key
 require('oil').setup({ default_file_explorer = false, })
 require('mini.pick').setup()
 require('which-key').setup({
@@ -97,7 +109,7 @@ require('which-key').setup({
     show_help = true,
 })
 require('mini.bufremove').setup()
-
+-- require('plugins.devroots')
 
 -- UI
 vim.cmd("colorscheme vague")

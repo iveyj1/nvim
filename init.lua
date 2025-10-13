@@ -96,6 +96,7 @@ map('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
 map('n', '<leader>fb', builtin.buffers, { desc = 'List buffers' })
 map('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
 map('n', '<leader>fm', builtin.oldfiles, { desc = 'Recent files' })
+map('n', '<leader>ft', builtin.treesitter, { desc = 'Treesitter' })
 
 -- Project-specific Telescope shortcuts
 map('n', '<leader>fc', function()

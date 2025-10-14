@@ -31,7 +31,7 @@ end
 
 map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
-vim.opt.makeprg = [[./nrf-build.sh -p . -b nrf54l15dk/nrf54l15/cpuapp -f -E "-DEXTRA_CONF_FILE=debug.conf" $*]]
+vim.opt.makeprg = [[./default_build $*]]
 
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
 map('n', '<leader>mr', ':MRU<CR>',  { silent = true, desc = 'MRU' })
@@ -139,3 +139,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.buflisted = true
     end,
 })
+
+vim.keymap.set('n', '<leader>cd', function()
+    vim.cmd('cd ' .. vim.fn.expand('%:p:h'))
+end, { desc = 'Set working directory to path of buffer.' })

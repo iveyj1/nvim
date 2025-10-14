@@ -1,0 +1,19 @@
+{
+  "plugins": {
+    "mini.bufremove": [],
+    "mru": [],
+    "neo-tree.nvim": [],
+    "nui.nvim": [],
+    "nvim-treesitter": [],
+    "nvim-treesitter-textobjects": [],
+    "nvim-web-devicons": [],
+    "oil.nvim": [],
+    "plenary.nvim": [],
+    "telescope.nvim": {
+      "rev": "b4da76b",
+      "src": "https://github.com/nvim-telescope/telescope.nvim"
+    },
+    "vague.nvim": [],
+    "which-key.nvim": []
+  }
+}

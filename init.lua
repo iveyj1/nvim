@@ -49,6 +49,9 @@ map('n', '<leader>l',  ':ls<CR>', {silent = true, desc = 'list buffers'})
 map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
 map('n', '<leader>w', ':w<CR>', { silent = true, desc = 'Write buffer' })
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
+map('n', '<leader>n', ':bn<CR>',  { silent = true, desc = 'next buffer' })
+map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
+
 
 -- System clipboard
 map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })

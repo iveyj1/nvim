@@ -37,19 +37,23 @@ local function toggle_relativenumber()
     vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end
 
-map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
-map('n', '<leader>q', ':quit<CR>', { silent = true, desc = 'Quit' })
-map('n', '<leader>x', '<C-w>c', { silent = true, desc = 'Close window' })
-map('n', '<leader>ed', ':Oil<CR>', { silent = true, desc = 'Oil file explorer' })
-map('n', '<leader>ec', ':edit $MYVIMRC<CR>:only<CR>', { silent = true, desc = 'Edit config' })
-map('n', '<leader>ew', ':new<CR>:only<CR>', { silent = true, desc = 'Open new buffer' })
-map('n', '<leader>l', ':ls<CR>', { silent = true, desc = 'List buffers' })
-map('n', '<leader>w', '<C-w>j', { silent = true, desc = 'Next window' })
+vim.opt.makeprg = [[./default_build $*]]
 
--- Clipboard
-map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to clipboard' })
-map({'n','v','x'}, '<leader>d', '"+d', { desc = 'Delete to clipboard' })
-map('n', '<leader>p', '"+p', { desc = 'Paste from clipboard' })
+map('n', '<leader>mr', ':MRU<CR>',  { silent = true, desc = 'MRU' })
+map('n', '<leader>ed', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
+map("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { silent = true, desc = "Open config as only window" })   
+map('n', '<leader>ew', ':new<CR>:only<CR>', { silent = true; desc = 'open new file as only window'})
+map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
+
+map('n', '<leader>l',  ':ls<CR>', {silent = true, desc = 'list buffers'})
+map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
+map('n', '<leader>w', ':w<CR>', { silent = true, desc = 'Write buffer' })
+map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
+
+-- System clipboard
+map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+map({'n','v','x'}, '<leader>d', '"+d', { desc = 'Delete to system clipboard' })
+map('n', '<leader>p', '"+p',           { desc = 'Paste from system clipboard' })
 
 -- Navigation niceties
 map({'n','v','x'}, '<C-d>', '<C-d>zz', { desc = 'Page down centered' })
@@ -91,6 +95,11 @@ telescope.setup({
     },
 })
 
+-- Project-specific Telescope shortcuts
+map('n', '<leader>fc', function()
+    builtin.find_files({ cwd = '../common' })
+end, { desc = 'Find files in ../common' })
+
 map('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
 map('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
 map('n', '<leader>fb', builtin.buffers, { desc = 'List buffers' })
@@ -98,10 +107,8 @@ map('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
 map('n', '<leader>fm', builtin.oldfiles, { desc = 'Recent files' })
 map('n', '<leader>ft', builtin.treesitter, { desc = 'Treesitter' })
 
--- Project-specific Telescope shortcuts
-map('n', '<leader>fc', function()
-    builtin.find_files({ cwd = '../common' })
-end, { desc = 'Find files in ../common' })
+map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
+map('n', '<leader>the',  ':TSEnsable highlight<cr>', { silent = true, desc = "Eisable Treesitter syntax highlighting"})
 
 map('n', '<leader>fbp', function()
     builtin.find_files({ cwd = '../../boards/arm' })
@@ -135,3 +142,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.buflisted = true
     end,
 })
+
+vim.keymap.set('n', '<leader>cd', function()
+    vim.cmd('cd ' .. vim.fn.expand('%:p:h'))
+end, { desc = 'Set working directory to path of buffer.' })

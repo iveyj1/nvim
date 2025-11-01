@@ -39,14 +39,17 @@ end
 
 vim.opt.makeprg = [[./default_build $*]]
 
-map('n', '<leader>mr', ':MRU<CR>',  { silent = true, desc = 'MRU' })
-map('n', '<leader>ed', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
+map('n', '<leader>em', ':MRU<CR>',  { silent = true, desc = 'MRU' })
+map('n', '<leader>eo', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
 map("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { silent = true, desc = "Open config as only window" })   
+map("n", "<leader>et", ":edit ~/.tmux.conf<CR>:only<CR>", { silent = true, desc = "Open tmux config as only window" })   
+map("n", "<leader>ez", ":edit ~/.wezterm.lua<CR>:only<CR>", { silent = true, desc = "Open wezterm config as only window" })   
 map('n', '<leader>ew', ':new<CR>:only<CR>', { silent = true; desc = 'open new file as only window'})
 map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
 map('n', '<leader>l',  ':ls<CR>', {silent = true, desc = 'list buffers'})
 map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
+map('n', '<leader>k', ':bd<CR>',     { silent = true, desc = 'Close buffer' })
 map('n', '<leader>w', ':w<CR>', { silent = true, desc = 'Write buffer' })
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
 map('n', '<leader>n', ':bn<CR>',  { silent = true, desc = 'next buffer' })
@@ -55,7 +58,9 @@ map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
 
 -- System clipboard
 map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+map({'n','v','x'}, '<leader>Y', '"+Y', { desc = 'Yank to end of line to system clipboard' })
 map({'n','v','x'}, '<leader>d', '"+d', { desc = 'Delete to system clipboard' })
+map({'n','v','x'}, '<leader>D', '"+D', { desc = 'Delete to end of line to system clipboard' })
 map('n', '<leader>p', '"+p',           { desc = 'Paste from system clipboard' })
 
 -- Navigation niceties

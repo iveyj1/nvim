@@ -122,16 +122,27 @@ map('n', '<leader>ft', builtin.treesitter, { desc = 'Treesitter' })
 map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
 map('n', '<leader>the',  ':TSEnsable highlight<cr>', { silent = true, desc = "Eisable Treesitter syntax highlighting"})
 
-map('n', '<leader>fbp', function()
-    builtin.find_files({ cwd = '../../boards/arm' })
-end, { desc = 'Find files in ../../boards/arm' })
+-- map('n', '<leader>fbp', function()
+--     builtin.find_files({ cwd = '../../boards/arm' })
+-- end, { desc = 'Find files in ../../boards/arm' })
+
+-- Telescope Git status and history
+map('n', '<leader>gs', builtin.git_status, { desc = 'Git status' })
+map('n', '<leader>gc', builtin.git_commits, { desc = 'Git commits' })
+map('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches' })
+map('n', '<leader>gB', builtin.git_bcommits, { desc = 'Buffer commits' })
+
+require ('gitsigns').setup();
 
 --========================================================
 -- Plugin Configs
 --========================================================
 require('oil').setup({ default_file_explorer = false })
-require('which-key').setup({ delay = 300, show_help = true })
+require('which-key').setup({ delay = 250, show_help = true })
 require('mini.bufremove').setup()
+
+-- Map 'k' to delete the current buffer using mini.bufremove
+vim.keymap.set('n', '<leader>bd', ':lua require("mini.bufremove").delete(0, false)<CR>', { desc = 'Delete current buffer' })   
 
 --========================================================
 -- UI & Misc

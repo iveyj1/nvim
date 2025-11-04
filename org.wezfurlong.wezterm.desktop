@@ -1,0 +1,18 @@
+[Desktop Entry]
+Name=WezTerm
+Comment=Wez's Terminal Emulator
+Keywords=shell;prompt;command;commandline;cmd;
+Icon=org.wezfurlong.wezterm
+StartupWMClass=org.wezfurlong.wezterm
+TryExec=wezterm
+Exec=wezterm start --cwd .
+Type=Application
+Categories=System;TerminalEmulator;Utility;
+Terminal=false
+
+Actions=new-window;
+
+[Desktop Action new-window]
+Name=New Window
+# add --always-new-process to avoid reuse of previous wezterm process
+Exec=wezterm start --cwd .

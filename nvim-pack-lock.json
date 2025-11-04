@@ -9,6 +9,10 @@
     "nvim-web-devicons": [],
     "oil.nvim": [],
     "plenary.nvim": [],
+    "rose-pine": {
+      "rev": "72a04c4",
+      "src": "https://github.com/rose-pine/neovim"
+    },
     "telescope.nvim": {
       "rev": "b4da76b",
       "src": "https://github.com/nvim-telescope/telescope.nvim"

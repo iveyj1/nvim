@@ -45,7 +45,6 @@ map("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { silent = true, desc = "O
 map("n", "<leader>et", ":edit ~/.tmux.conf<CR>:only<CR>", { silent = true, desc = "Open tmux config as only window" })   
 map("n", "<leader>ez", ":edit ~/.wezterm.lua<CR>:only<CR>", { silent = true, desc = "Open wezterm config as only window" })   
 map('n', '<leader>ew', ':new<CR>:only<CR>', { silent = true; desc = 'open new file as only window'})
-map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
 map('n', '<leader>l',  ':ls<CR>', {silent = true, desc = 'list buffers'})
 map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
@@ -53,15 +52,18 @@ map('n', '<leader>k', ':bd<CR>',     { silent = true, desc = 'Close buffer' })
 map('n', '<leader>w', ':w<CR>', { silent = true, desc = 'Write buffer' })
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
 map('n', '<leader>n', ':bn<CR>',  { silent = true, desc = 'next buffer' })
-map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
 
+map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
+map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
+map('n', 'oo', ':put _<CR>', {silent = true, desc = 'open new line below cursor'})
+map('n', 'OO', ':put! _<CR>', {silent = true, desc = 'open new line above cursor'})
 
 -- System clipboard
 map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
 map({'n','v','x'}, '<leader>Y', '"+Y', { desc = 'Yank to end of line to system clipboard' })
 map({'n','v','x'}, '<leader>d', '"+d', { desc = 'Delete to system clipboard' })
 map({'n','v','x'}, '<leader>D', '"+D', { desc = 'Delete to end of line to system clipboard' })
-map('n', '<leader>p', '"+p',           { desc = 'Paste from system clipboard' })
+map({'n','v','x'}, '<leader>p', '"+p', { desc = 'Paste from system clipboard' })
 
 -- Navigation niceties
 map({'n','v','x'}, '<C-d>', '<C-d>zz', { desc = 'Page down centered' })
@@ -71,6 +73,7 @@ map('n', 'U', function() print("Do not use 'U'") end, { silent = true })
 --========================================================
 -- Plugins (via vim.pack)
 --========================================================
+
 vim.pack.add({
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
@@ -84,8 +87,8 @@ vim.pack.add({
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/MunifTanjim/nui.nvim" },
     { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" },
+    { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
 })
-
 --========================================================
 -- Telescope Setup
 --========================================================
@@ -132,7 +135,17 @@ require('mini.bufremove').setup()
 --========================================================
 -- UI & Misc
 --========================================================
-vim.cmd("colorscheme vague")
+-- vim.cmd("colorscheme vague")
+-- vim.cmd("colorscheme rose-pine")
+vim.cmd.colorscheme("rose-pine")
+
+local bg = "#101010"
+vim.api.nvim_set_hl(0, "Normal",      { bg = bg })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
+vim.api.nvim_set_hl(0, "FloatBorder", { bg = bg })
+vim.api.nvim_set_hl(0, "SignColumn",  { bg = bg })
+vim.api.nvim_set_hl(0, "LineNr",      { bg = bg })
+vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = bg })
 vim.cmd("hi StatusLine guibg=none")
 
 vim.api.nvim_create_autocmd('TextYankPost', {

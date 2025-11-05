@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "dark-modern": {
+      "rev": "cb9df08",
+      "src": "https://github.com/Mofiqul/vscode.nvim"
+    },
     "mini.bufremove": [],
     "mru": [],
     "neo-tree.nvim": [],

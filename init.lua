@@ -88,6 +88,7 @@ vim.pack.add({
     { src = "https://github.com/MunifTanjim/nui.nvim" },
     { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" },
     { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
+    -- { src = "https://github.com/Mofiqul/vscode.nvim"  }
 })
 --========================================================
 -- Telescope Setup
@@ -136,7 +137,10 @@ require('mini.bufremove').setup()
 -- UI & Misc
 --========================================================
 -- vim.cmd("colorscheme vague")
--- vim.cmd("colorscheme rose-pine")
+require("rose-pine").setup({
+    variant = "moon", -- auto, main, moon, or dawn
+})
+
 vim.cmd.colorscheme("rose-pine")
 
 local bg = "#101010"

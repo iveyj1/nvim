@@ -55,8 +55,8 @@ map('n', '<leader>n', ':bn<CR>',  { silent = true, desc = 'next buffer' })
 
 map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
 map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
-map('n', 'oo', ':put _<CR>', {silent = true, desc = 'open new line below cursor'})
-map('n', 'OO', ':put! _<CR>', {silent = true, desc = 'open new line above cursor'})
+map('n', 'go', ':put _<CR>', {silent = true, desc = 'open new line below cursor'})
+map('n', 'gO', ':put! _<CR>', {silent = true, desc = 'open new line above cursor'})
 
 -- System clipboard
 map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
@@ -89,7 +89,12 @@ vim.pack.add({
     { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" },
     { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
     -- { src = "https://github.com/Mofiqul/vscode.nvim"  }
+    { src = "https://github.com/lewis6991/gitsigns.nvim"}
+    
 })
+
+require ('gitsigns').setup();
+
 --========================================================
 -- Telescope Setup
 --========================================================
@@ -132,7 +137,6 @@ map('n', '<leader>gc', builtin.git_commits, { desc = 'Git commits' })
 map('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches' })
 map('n', '<leader>gB', builtin.git_bcommits, { desc = 'Buffer commits' })
 
-require ('gitsigns').setup();
 
 --========================================================
 -- Plugin Configs
@@ -154,7 +158,7 @@ require("rose-pine").setup({
 
 vim.cmd.colorscheme("rose-pine")
 
-local bg = "#101010"
+local bg = "#141414"
 vim.api.nvim_set_hl(0, "Normal",      { bg = bg })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
 vim.api.nvim_set_hl(0, "FloatBorder", { bg = bg })

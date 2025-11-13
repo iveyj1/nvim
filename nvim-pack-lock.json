@@ -16,6 +16,10 @@
     "mru": [],
     "neo-tree.nvim": [],
     "nui.nvim": [],
+    "nvim-tmux-navigation": {
+      "rev": "4898c98",
+      "src": "https://github.com/alexghergh/nvim-tmux-navigation"
+    },
     "nvim-treesitter": [],
     "nvim-treesitter-textobjects": [],
     "nvim-web-devicons": [],

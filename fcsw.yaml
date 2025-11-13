@@ -1,0 +1,17 @@
+session_name: fcsw
+windows:
+- window_name: dev window
+  layout: tiled
+  panes:
+    - shell_command:           # pane no. 1
+        - cd $HOME/dev/iq-firmware/products/fc          # run multiple commands in this pane
+    - shell_command:           # pane no. 1
+        - cd $HOME/dev/iq-firmware/products/fc          # run multiple commands in this pane
+        - source "$HOME/.local/bin/pyenv/bin/activate"
+        - python $HOME/dev/iq-firmware/tools/term.py
+    - shell_command:           # pane no. 1
+        - cd $HOME/dev/iq-firmware/products/sw          # run multiple commands in this pane
+    - shell_command:           # pane no. 1
+        - cd $HOME/dev/iq-firmware/products/sw          # run multiple commands in this pane
+        - source "$HOME/.local/bin/pyenv/bin/activate"
+        - python $HOME/dev/iq-firmware/tools/term.py

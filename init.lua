@@ -89,11 +89,25 @@ vim.pack.add({
     { src = "https://github.com/nvim-neo-tree/neo-tree.nvim" },
     { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
     -- { src = "https://github.com/Mofiqul/vscode.nvim"  }
-    { src = "https://github.com/lewis6991/gitsigns.nvim"}
-    
+    { src = "https://github.com/lewis6991/gitsigns.nvim"},
+    { src = "https://github.com/alexghergh/nvim-tmux-navigation" }
+
 })
 
-require ('gitsigns').setup();
+require('gitsigns').setup()
+
+local nvim_tmux_nav = require('nvim-tmux-navigation')
+
+nvim_tmux_nav.setup({
+    disable_when_zoomed = true, -- defaults to false
+})
+
+vim.keymap.set('n', "<C-h>",     nvim_tmux_nav.NvimTmuxNavigateLeft)
+vim.keymap.set('n', "<C-j>",     nvim_tmux_nav.NvimTmuxNavigateDown)
+vim.keymap.set('n', "<C-k>",     nvim_tmux_nav.NvimTmuxNavigateUp)
+vim.keymap.set('n', "<C-l>",     nvim_tmux_nav.NvimTmuxNavigateRight)
+vim.keymap.set('n', "<C-\\>",    nvim_tmux_nav.NvimTmuxNavigateLastActive)
+vim.keymap.set('n', "<C-Space>", nvim_tmux_nav.NvimTmuxNavigateNext)
 
 --========================================================
 -- Telescope Setup
@@ -116,6 +130,7 @@ telescope.setup({
 map('n', '<leader>fc', function()
     builtin.find_files({ cwd = '../common' })
 end, { desc = 'Find files in ../common' })
+
 map('n', '<leader>fx', function()
     builtin.find_files({ cwd = '../../boards/arm' })
 end, { desc = 'Find files in ../../boards/arm' })
@@ -131,18 +146,15 @@ map('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
 map('n', '<leader>fm', builtin.oldfiles, { desc = 'Recent files' })
 map('n', '<leader>ft', builtin.treesitter, { desc = 'Treesitter' })
 
--- Telescope find in specific location
--- map('n', '<leader>fbp', function()
---     builtin.find_files({ cwd = '../../boards/arm' })
--- end, { desc = 'Find files in ../../boards/arm' })
+
 -- Telescope Git status and history
 map('n', '<leader>gs', builtin.git_status, { desc = 'Git status' })
 map('n', '<leader>gc', builtin.git_commits, { desc = 'Git commits' })
 map('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches' })
 map('n', '<leader>gB', builtin.git_bcommits, { desc = 'Buffer commits' })
 
--- map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
--- map('n', '<leader>the',  ':TSEnsable highlight<cr>', { silent = true, desc = "Eisable Treesitter syntax highlighting"})
+map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
+map('n', '<leader>the',  ':TSEnable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
 
 --========================================================
 -- Plugin Configs
@@ -164,13 +176,15 @@ require("rose-pine").setup({
 
 vim.cmd.colorscheme("rose-pine")
 
-local bg = "#141414"
+local bg = "#0c0c0c"
 vim.api.nvim_set_hl(0, "Normal",      { bg = bg })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
 vim.api.nvim_set_hl(0, "FloatBorder", { bg = bg })
 vim.api.nvim_set_hl(0, "SignColumn",  { bg = bg })
 vim.api.nvim_set_hl(0, "LineNr",      { bg = bg })
 vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = bg })
+vim.api.nvim_set_hl(0, "NormalNC", { bg = "#282828" }) -- Example dark gray background
+
 vim.cmd("hi StatusLine guibg=none")
 
 vim.api.nvim_create_autocmd('TextYankPost', {

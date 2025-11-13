@@ -4,6 +4,14 @@
       "rev": "cb9df08",
       "src": "https://github.com/Mofiqul/vscode.nvim"
     },
+    "gitsigns.nvim": {
+      "rev": "20ad441",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
+    "mini-git": {
+      "rev": "8324672",
+      "src": "https://github.com/nvim-mini/mini-git"
+    },
     "mini.bufremove": [],
     "mru": [],
     "neo-tree.nvim": [],

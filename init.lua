@@ -37,14 +37,14 @@ local function toggle_relativenumber()
     vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end
 
-vim.opt.makeprg = [[./default_build $*]]
-
 map('n', '<leader>em', ':MRU<CR>',  { silent = true, desc = 'MRU' })
 map('n', '<leader>eo', ':Oil<CR>',   { silent = true, desc = 'Oil file explorer' })
 map("n", "<leader>ec", ":edit $MYVIMRC<CR>:only<CR>", { silent = true, desc = "Open config as only window" })   
 map("n", "<leader>et", ":edit ~/.tmux.conf<CR>:only<CR>", { silent = true, desc = "Open tmux config as only window" })   
 map("n", "<leader>ez", ":edit ~/.wezterm.lua<CR>:only<CR>", { silent = true, desc = "Open wezterm config as only window" })   
 map('n', '<leader>ew', ':new<CR>:only<CR>', { silent = true; desc = 'open new file as only window'})
+map('n', '<leader>ek', 'O<esc>j', { silent = true; desc = 'add new line above cursor'})
+map('n', '<leader>ej', 'o<esc>k', { silent = true; desc = 'add new line below cursor'})
 
 map('n', '<leader>l',  ':ls<CR>', {silent = true, desc = 'list buffers'})
 map('n', '<leader>x', '<C-w>c',     { silent = true, desc = 'Close window' })
@@ -53,14 +53,14 @@ map('n', '<leader>w', ':w<CR>', { silent = true, desc = 'Write buffer' })
 map('n', '<leader>q', ':quit<CR>',  { silent = true, desc = 'Quit' })
 map('n', '<leader>n', ':bn<CR>',  { silent = true, desc = 'next buffer' })
 
-map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
-map('n', '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 map('n', 'go', ':put _<CR>', {silent = true, desc = 'open new line below cursor'})
 map('n', 'gO', ':put! _<CR>', {silent = true, desc = 'open new line above cursor'})
+-- map('i', 'jj', '<esc>',  { silent = true, desc = 'insert mode <escape> alias' })
+map({'n','v','x'}, '<leader>rn', toggle_relativenumber, { desc = 'Toggle relative number' })
 
 -- System clipboard
 map({'n','v','x'}, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
-map({'n','v','x'}, '<leader>Y', '"+Y', { desc = 'Yank to end of line to system clipboard' })
+map({'n','v','x'}, '<leader>Y', '"+y$', { desc = 'Yank to end of line to system clipboard' })
 map({'n','v','x'}, '<leader>d', '"+d', { desc = 'Delete to system clipboard' })
 map({'n','v','x'}, '<leader>D', '"+D', { desc = 'Delete to end of line to system clipboard' })
 map({'n','v','x'}, '<leader>p', '"+p', { desc = 'Paste from system clipboard' })
@@ -68,7 +68,7 @@ map({'n','v','x'}, '<leader>p', '"+p', { desc = 'Paste from system clipboard' })
 -- Navigation niceties
 map({'n','v','x'}, '<C-d>', '<C-d>zz', { desc = 'Page down centered' })
 map({'n','v','x'}, '<C-u>', '<C-u>zz', { desc = 'Page up centered' })
-map('n', 'U', function() print("Do not use 'U'") end, { silent = true })
+map({'n','v','x'}, 'U', function() print("Do not use 'U'") end, { silent = true })
 
 --========================================================
 -- Plugins (via vim.pack)
@@ -116,6 +116,13 @@ telescope.setup({
 map('n', '<leader>fc', function()
     builtin.find_files({ cwd = '../common' })
 end, { desc = 'Find files in ../common' })
+map('n', '<leader>fx', function()
+    builtin.find_files({ cwd = '../../boards/arm' })
+end, { desc = 'Find files in ../../boards/arm' })
+
+vim.keymap.set('n', '<leader>cd', function()
+    vim.cmd('cd ' .. vim.fn.expand('%:p:h'))
+end, { desc = 'Set working directory to path of buffer.' })
 
 map('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
 map('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
@@ -124,19 +131,18 @@ map('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
 map('n', '<leader>fm', builtin.oldfiles, { desc = 'Recent files' })
 map('n', '<leader>ft', builtin.treesitter, { desc = 'Treesitter' })
 
-map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
-map('n', '<leader>the',  ':TSEnsable highlight<cr>', { silent = true, desc = "Eisable Treesitter syntax highlighting"})
-
+-- Telescope find in specific location
 -- map('n', '<leader>fbp', function()
 --     builtin.find_files({ cwd = '../../boards/arm' })
 -- end, { desc = 'Find files in ../../boards/arm' })
-
 -- Telescope Git status and history
 map('n', '<leader>gs', builtin.git_status, { desc = 'Git status' })
 map('n', '<leader>gc', builtin.git_commits, { desc = 'Git commits' })
 map('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches' })
 map('n', '<leader>gB', builtin.git_bcommits, { desc = 'Buffer commits' })
 
+-- map('n', '<leader>thd',  ':TSDisable highlight<cr>', { silent = true, desc = "Disable Treesitter syntax highlighting"})
+-- map('n', '<leader>the',  ':TSEnsable highlight<cr>', { silent = true, desc = "Eisable Treesitter syntax highlighting"})
 
 --========================================================
 -- Plugin Configs
@@ -153,7 +159,7 @@ vim.keymap.set('n', '<leader>bd', ':lua require("mini.bufremove").delete(0, fals
 --========================================================
 -- vim.cmd("colorscheme vague")
 require("rose-pine").setup({
-    variant = "moon", -- auto, main, moon, or dawn
+    variant = "main", -- auto, main, moon, or dawn
 })
 
 vim.cmd.colorscheme("rose-pine")
@@ -183,6 +189,3 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-vim.keymap.set('n', '<leader>cd', function()
-    vim.cmd('cd ' .. vim.fn.expand('%:p:h'))
-end, { desc = 'Set working directory to path of buffer.' })
